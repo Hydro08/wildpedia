@@ -1,0 +1,162 @@
+.topic-container .block-content:nth-child(1) {
+  background-image: url("../images/background/bg-air.webp");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.topic-container .block-content:nth-child(2) .animals-container {
+  background: url(../images/background/bg-air.webp);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.topic-container .block-content .habitat-content .content .cards:nth-child(1) {
+  background: url(../images/background/bg-air.webp);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.topic-container .block-content .habitat-content .content .cards:nth-child(2) {
+  background: url(../images/background/bg-forest.webp);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.topic-container .block-content .habitat-content .content .cards:nth-child(3) {
+  background: url(../images/background/bg-jungle.webp);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.topic-container .block-content .habitat-content .content .cards:nth-child(4) {
+  background: url(../images/background/bg-desert.webp);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.topic-container .block-content .habitat-content .content .cards:nth-child(5) {
+  background: url(../images/background/bg-sea.webp);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.topic-container
+  .block-content:nth-child(2)
+  .animals-container
+  .air-content
+  .cards:nth-child(1) {
+  background: url(../images/background/bg-air.webp);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.topic-container
+  .block-content:nth-child(2)
+  .animals-container
+  .air-content
+  .cards:nth-child(2) {
+  background: url(../images/air/colugo.png);
+  background-size: cover;
+  background-position: right;
+  background-repeat: no-repeat;
+}
+
+.topic-container
+  .block-content:nth-child(2)
+  .animals-container
+  .air-content
+  .cards:nth-child(3) {
+  background: url(../images/air/flying-squirrel.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.topic-container
+  .block-content:nth-child(2)
+  .animals-container
+  .air-content
+  .cards:nth-child(4) {
+  background: url(../images/air/magnificent-frigatebird.webp);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.topic-container
+  .block-content:nth-child(2)
+  .animals-container
+  .air-content
+  .cards:nth-child(5) {
+  background: url(../images/air/imperial-amazon.webp);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.topic-container
+  .block-content:nth-child(2)
+  .animals-container
+  .air-content
+  .cards:nth-child(6) {
+  background: url(../images/air/greater-lophorina.webp);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.topic-container
+  .block-content:nth-child(2)
+  .animals-container
+  .air-content
+  .cards:nth-child(7) {
+  background: url(../images/air/javan-hawk-eagle.webp);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.topic-container
+  .block-content:nth-child(2)
+  .animals-container
+  .air-content
+  .cards:nth-child(8) {
+  background: url(../images/air/mariana-fruit-dove.webp);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.topic-container
+  .block-content:nth-child(2)
+  .animals-container
+  .air-content
+  .cards:nth-child(9) {
+  background: url(../images/air/spix-macaw.webp);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.topic-container
+  .block-content:nth-child(2)
+  .animals-container
+  .air-content
+  .cards:nth-child(10) {
+  background: url(../images/air/tahiti-swiftlet.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.topic-container
+  .block-content:nth-child(2)
+  .animals-container
+  .air-content
+  .cards:nth-child(11) {
+  background: url(../images/air/white-hawk.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}

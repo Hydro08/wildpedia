@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Snake Game</title>
+    <link rel="stylesheet" href="../../css/snake.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header class="container-header">
+        <h1 id="container-title">Snake Game</h1>
+      </header>
+
+      <div class="container-wrapper">
+        <div class="difficulties-container" id="difficulties-container">
+          <header class="difficulties-header">
+            <h1>Select Difficulties</h1>
+          </header>
+          <div class="difficulties-wrapper" id="difficulties-wrapper">
+            <div class="difficulties-content" onclick="start_easy()">
+              <h1>EASY</h1>
+            </div>
+            <div class="difficulties-content">
+              <h1>MEDIUM</h1>
+            </div>
+            <div class="difficulties-content">
+              <h1>HARD</h1>
+            </div>
+          </div>
+        </div>
+        <div class="easy-difficulty" id="easy-difficulty">
+          <div class="settings-mode" id="settings-mode">
+            <button id="back-btn" onclick="back_page()">Back</button>
+            <button id="settings-btn" onclick="settings_content()">
+              Settings
+            </button>
+            <button id="start-btn" onclick="start_game()">Start</button>
+            <button
+              class="restart-btn"
+              id="restart-btn"
+              onclick="restart_game()"
+            >
+              Restart
+            </button>
+            <label for="food">Food</label>
+            <input
+              id="food-count"
+              type="text"
+              inputmode="numeric"
+              pattern="[1-5]*"
+              maxlength="1"
+              oninput="this.value = this.value.replace(/[^1-5]/g, '')"
+            />
+          </div>
+          <div class="settings-main" id="settings-main">
+            <div class="settings-content">
+              <button onclick="back_settings_mode()">Back</button>
+              <h2>Legend</h2>
+              <ul>
+                <li>
+                  <span class="legend-box" style="background: green"></span>
+                  Food (+1 Segment)
+                </li>
+                <li>
+                  <span class="legend-box" style="background: blue"></span>
+                  Speed Potion (Speed for 10s)
+                </li>
+                <li>
+                  <span class="legend-box" style="background: red"></span> Bonus
+                  Food (+2 Score)
+                </li>
+              </ul>
+            </div>
+            <h2>Legend</h2>
+
+            <button onclick="toggle_settings()">Close</button>
+          </div>
+          <div class="canvas-area" id="canvas-area">
+            <div class="score-area">
+              <h2 class="score-text">Score: <span id="score-value">0</span></h2>
+              <h2 class="highscore-text">
+                Highscore: <span id="highscore-value">0</span>
+              </h2>
+            </div>
+            <canvas
+              class="game-canvas"
+              id="game-canvas"
+              width="800"
+              height="550"
+            ></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="../../js/snake.js"></script>
+  </body>
+</html>
