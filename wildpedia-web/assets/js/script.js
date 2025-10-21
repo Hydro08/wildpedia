@@ -1,84 +1,15 @@
-const navLinks = document.querySelectorAll(".ul-container p");
-const home_link = document.getElementById("home-link");
-let currentActive = home_link;
-
-const home_container = document.getElementById("home-container");
-const about_container = document.getElementById("about-container");
-const topic_container = document.getElementById("topic-container");
-const creators_container = document.getElementById("creators-container");
-
-const explore_btn = document.getElementById("explore-btn");
-
-const habitat_block_content = document.getElementById("habitat-block-content");
-const animal_block_content = document.getElementById("animal-block-content");
-
-const topic_air_bg = document.getElementById("topic-air-bg");
-const topic_forest_bg = document.getElementById("topic-forest-bg");
-const topic_jungle_bg = document.getElementById("topic-jungle-bg");
-const topic_desert_bg = document.getElementById("topic-desert-bg");
-const topic_sea_bg = document.getElementById("topic-sea-bg");
-
-const back_habitat = document.getElementById("back-habitat");
-
-function habitat_to_animal() {
-  habitat_block_content.style.width = "0%";
-  animal_block_content.style.width = "100%";
-
-  habitat_block_content.style.visibility = "none";
-  animal_block_content.style.visibility = "visible";
-
-  habitat_block_content.style.opacity = "0";
-  animal_block_content.style.opacity = "1";
+function animateElements(
+  selector,
+  animationName = "fade-in-up",
+  duration = "1500ms"
+) {
+  const elements = document.querySelectorAll(selector);
+  elements.forEach((el) => {
+    el.style.animation = "none";
+    el.offsetHeight;
+    el.style.animation = `${animationName} ${duration} ease forwards`;
+  });
 }
-
-function animal_to_habitat() {
-  habitat_block_content.style.width = "100%";
-  animal_block_content.style.width = "0%";
-
-  habitat_block_content.style.visibility = "visible";
-  animal_block_content.style.visibility = "hidden";
-
-  habitat_block_content.style.opacity = "1";
-  animal_block_content.style.opacity = "0";
-}
-
-back_habitat.addEventListener("click", () => {
-  animal_to_habitat();
-});
-
-topic_air_bg.addEventListener("click", () => {
-  habitat_to_animal();
-});
-
-topic_air_bg.addEventListener("mouseover", () => {
-  habitat_block_content.style.backgroundImage =
-    "url('assets/images/background/bg-air.webp')";
-  habitat_block_content.classList.add("background-change");
-});
-
-topic_forest_bg.addEventListener("mouseover", () => {
-  habitat_block_content.style.backgroundImage =
-    "url('assets/images/background/bg-forest.webp')";
-  habitat_block_content.classList.add("background-change");
-});
-
-topic_jungle_bg.addEventListener("mouseover", () => {
-  habitat_block_content.style.backgroundImage =
-    "url('assets/images/background/bg-jungle.webp')";
-  habitat_block_content.classList.add("background-change");
-});
-
-topic_desert_bg.addEventListener("mouseover", () => {
-  habitat_block_content.style.backgroundImage =
-    "url('assets/images/background/bg-desert.webp')";
-  habitat_block_content.classList.add("background-change");
-});
-
-topic_sea_bg.addEventListener("mouseover", () => {
-  habitat_block_content.style.backgroundImage =
-    "url('assets/images/background/bg-sea.webp')";
-  habitat_block_content.classList.add("background-change");
-});
 
 const habitats = {
   air: document.getElementById("air-habitat"),
@@ -90,11 +21,9 @@ const habitats = {
 
 const container = document.getElementById("home-container");
 
-container.addEventListener("click", (e) => {
+container?.addEventListener("click", (e) => {
   const card = e.target.closest(".cards");
   if (!card) return;
-
-  const id = card.id;
 
   Object.values(habitats).forEach((h) => {
     h.style.width = "0%";
@@ -102,189 +31,170 @@ container.addEventListener("click", (e) => {
     h.style.visibility = "hidden";
   });
 
-  if (id === "air-card") showHabitat("air");
-  else if (id === "forest-card") showHabitat("forest");
-  else if (id === "jungle-card") showHabitat("jungle");
-  else if (id === "desert-card") showHabitat("desert");
-  else if (id === "sea-card") showHabitat("sea");
+  let targetHabitat = null;
+  switch (card.id) {
+    case "air-card":
+      targetHabitat = "air";
+      break;
+    case "forest-card":
+      targetHabitat = "forest";
+      break;
+    case "jungle-card":
+      targetHabitat = "jungle";
+      break;
+    case "desert-card":
+      targetHabitat = "desert";
+      break;
+    case "sea-card":
+      targetHabitat = "sea";
+      break;
+  }
+
+  if (targetHabitat && habitats[targetHabitat]) {
+    const h = habitats[targetHabitat];
+    h.style.width = "100%";
+    h.style.opacity = "1";
+    h.style.visibility = "visible";
+
+    animateElements(`#${h.id} .left-content p`);
+    animateElements(`#${h.id} .left-content button`);
+    animateElements(`#${h.id} .right-content .cards`);
+  }
 });
 
-function showHabitat(name) {
-  const h = habitats[name];
-  h.style.width = "100%";
-  h.style.opacity = "1";
-  h.style.visibility = "visible";
-}
+const habitat_block_content = document.getElementById("habitat-block-content");
 
-function showHabitat(name) {
-  const h = habitats[name];
+const topicAir = document.getElementById("topic-air-bg");
+const topicForest = document.getElementById("topic-forest-bg");
+const topicJungle = document.getElementById("topic-jungle-bg");
+const topicDesert = document.getElementById("topic-desert-bg");
+const topicSea = document.getElementById("topic-sea-bg");
 
-  h.style.width = "100%";
-  h.style.opacity = "1";
-  h.style.visibility = "visible";
+const backgrounds = {
+  "topic-air-bg": "url('assets/images/background/bg-air.webp')",
+  "topic-forest-bg": "url('assets/images/background/bg-forest.webp')",
+  "topic-jungle-bg": "url('assets/images/background/bg-jungle.webp')",
+  "topic-desert-bg": "url('assets/images/background/bg-desert.webp')",
+  "topic-sea-bg": "url('assets/images/background/bg-sea.webp')",
+};
 
-  const paragraphs = h.querySelectorAll(".left-content p");
-  const buttons = h.querySelectorAll(".left-content button");
-  const cards = h.querySelectorAll(".right-content div");
-  paragraphs.forEach((p) => {
-    p.style.animation = "none";
-    p.offsetHeight;
-    p.style.animation = "fade-in-up 1500ms ease";
-  });
-  buttons.forEach((btn) => {
-    btn.style.animation = "none";
-    btn.offsetHeight;
-    btn.style.animation = "fade-in-up 1500ms ease";
-  });
-  cards.forEach((c) => {
-    c.style.animation = "none";
-    c.offsetHeight;
-    c.style.animation = "fade-in-up 1500ms ease";
-  });
-}
-
-explore_btn.addEventListener("click", () => {
-  document.getElementById("topic-link").click();
-});
-
-navLinks.forEach((link) => {
-  link.addEventListener("click", () => {
-    navLinks.forEach((item) => item.classList.remove("link-active"));
-
-    currentActive = link;
-    link.classList.add("link-active");
-
-    if (link.id === "home-link") {
-      home_container.style.width = "100%";
-      about_container.style.width = "0%";
-      topic_container.style.width = "0%";
-      creators_container.style.width = "0%";
-
-      home_container.style.visibility = "visible";
-      about_container.style.visibility = "hidden";
-      topic_container.style.visibility = "hidden";
-      creators_container.style.visibility = "hidden";
-
-      home_container.style.opacity = "1";
-      about_container.style.opacity = "0";
-      topic_container.style.opacity = "0";
-      creators_container.style.opacity = "0";
-
-      const paragraphs = document.querySelectorAll(".left-content p");
-      const buttons = document.querySelectorAll(".left-content button");
-      const cards = document.querySelectorAll(".right-content div");
-      paragraphs.forEach((p) => {
-        p.style.animation = "none";
-        p.offsetHeight;
-        p.style.animation = "fade-in-up 1500ms ease";
-      });
-      buttons.forEach((btn) => {
-        btn.style.animation = "none";
-        btn.offsetHeight;
-        btn.style.animation = "fade-in-up 1500ms ease";
-      });
-      cards.forEach((c) => {
-        c.style.animation = "none";
-        c.offsetHeight;
-        c.style.animation = "fade-in-up 1500ms ease";
-      });
-    } else if (link.id === "about-link") {
-      home_container.style.width = "0%";
-      about_container.style.width = "100%";
-      topic_container.style.width = "0%";
-      creators_container.style.width = "0%";
-
-      home_container.style.visibility = "hidden";
-      about_container.style.visibility = "visible";
-      topic_container.style.visibility = "hidden";
-      creators_container.style.visibility = "hidden";
-
-      home_container.style.opacity = "0";
-      about_container.style.opacity = "1";
-      topic_container.style.opacity = "0";
-      creators_container.style.opacity = "0";
-
-      const about_paragraph = document.querySelectorAll(
-        ".about-container .block-content .content p, .about-container .block-content .content li"
-      );
-
-      about_paragraph.forEach((a) => {
-        a.style.animation = "none";
-        a.offsetHeight;
-        a.style.animation = "scale-animation 1s ease";
-      });
-    } else if (link.id === "topic-link") {
-      home_container.style.width = "0%";
-      about_container.style.width = "0%";
-      topic_container.style.width = "100%";
-      creators_container.style.width = "0%";
-
-      home_container.style.visibility = "hidden";
-      about_container.style.visibility = "hidden";
-      topic_container.style.visibility = "visible";
-      creators_container.style.visibility = "hidden";
-
-      home_container.style.opacity = "0";
-      about_container.style.opacity = "0";
-      topic_container.style.opacity = "1";
-      creators_container.style.opacity = "0";
-    } else if (link.id === "creators-link") {
-      home_container.style.width = "0%";
-      about_container.style.width = "0%";
-      topic_container.style.width = "0%";
-      creators_container.style.width = "100%";
-
-      home_container.style.visibility = "hidden";
-      about_container.style.visibility = "hidden";
-      topic_container.style.visibility = "hidden";
-      creators_container.style.visibility = "visible";
-
-      home_container.style.opacity = "0";
-      about_container.style.opacity = "0";
-      topic_container.style.opacity = "0";
-      creators_container.style.opacity = "1";
-    }
-  });
-  link.addEventListener("mouseenter", () => {
-    navLinks.forEach((item) => item.classList.remove("link-active"));
-
-    link.classList.add("link-active");
-  });
-  link.addEventListener("mouseleave", () => {
-    navLinks.forEach((item) => item.classList.remove("link-active"));
-
-    if (currentActive) {
-      currentActive.classList.add("link-active");
+Object.entries(backgrounds).forEach(([id, url]) => {
+  const el = document.getElementById(id);
+  el?.addEventListener("mouseover", () => {
+    if (habitat_block_content) {
+      habitat_block_content.style.backgroundImage = url;
+      habitat_block_content.classList.add("background-change");
     }
   });
 });
 
-function visit() {
-  const nav_container = document.getElementById("nav-container");
-  const title_left = document.getElementById("title-left");
-  const visit_btn = document.getElementById("visit-btn");
-  const main_container = document.getElementById("main-container");
-  nav_container.classList.remove("nav-container");
-  nav_container.classList.add("nav-container-active");
-  title_left.classList.remove("title-left");
-  title_left.classList.add("title-left-new");
-  main_container.classList.remove("main-container");
-  main_container.classList.add("new-main-container");
+const animal_block_content = document.getElementById("animal-block-content");
+const air_habitat_content = document.getElementById("air-habitat-content");
+const forest_habitat_content = document.getElementById(
+  "forest-habitat-content"
+);
+const jungle_habitat_content = document.getElementById(
+  "jungle-habitat-content"
+);
+const desert_habitat_content = document.getElementById(
+  "desert-habitat-content"
+);
+const sea_habitat_content = document.getElementById("sea-habitat-content");
+const back_habitat = document.querySelectorAll(".back-habitat");
+let habitat_text = null;
 
-  visit_btn.style.display = "none";
+back_habitat.forEach((back_only) => {
+  back_only.addEventListener("click", () => animal_to_habitat());
+});
+
+topicAir?.addEventListener("click", () => {
+  habitat_text = "air";
+  habitat_to_animal();
+});
+topicForest?.addEventListener("click", () => {
+  habitat_text = "forest";
+  habitat_to_animal();
+});
+topicJungle?.addEventListener("click", () => {
+  habitat_text = "jungle";
+  habitat_to_animal();
+});
+topicDesert?.addEventListener("click", () => {
+  habitat_text = "desert";
+  habitat_to_animal();
+});
+topicSea?.addEventListener("click", () => {
+  habitat_text = "sea";
+  habitat_to_animal();
+});
+
+function habitat_to_animal() {
+  if (!habitat_block_content || !animal_block_content) return;
+
+  habitat_block_content.style.width = "0%";
+  animal_block_content.style.width = "100%";
+
+  habitat_block_content.style.visibility = "hidden";
+  animal_block_content.style.visibility = "visible";
+
+  habitat_block_content.style.opacity = "0";
+  animal_block_content.style.opacity = "1";
+
+  if (habitat_text === "air") {
+    air_habitat_content.style.width = "100%";
+    air_habitat_content.style.visibility = "visible";
+    air_habitat_content.style.opacity = "1";
+  } else if (habitat_text === "forest") {
+    forest_habitat_content.style.width = "100%";
+    forest_habitat_content.style.visibility = "visible";
+    forest_habitat_content.style.opacity = "1";
+  } else if (habitat_text === "jungle") {
+    jungle_habitat_content.style.width = "100%";
+    jungle_habitat_content.style.visibility = "visible";
+    jungle_habitat_content.style.opacity = "1";
+  } else if (habitat_text === "desert") {
+    desert_habitat_content.style.width = "100%";
+    desert_habitat_content.style.visibility = "visible";
+    desert_habitat_content.style.opacity = "1";
+  } else if (habitat_text === "sea") {
+    sea_habitat_content.style.width = "100%";
+    sea_habitat_content.style.visibility = "visible";
+    sea_habitat_content.style.opacity = "1";
+  }
 }
 
-function title_left() {
-  const nav_container = document.getElementById("nav-container");
-  const title_left = document.getElementById("title-left");
-  const visit_btn = document.getElementById("visit-btn");
-  const main_container = document.getElementById("main-container");
-  nav_container.classList.add("nav-container");
-  nav_container.classList.remove("nav-container-active");
-  title_left.classList.add("title-left");
-  title_left.classList.remove("title-left-new");
-  main_container.classList.add("main-container");
-  main_container.classList.remove("new-main-container");
+function animal_to_habitat() {
+  if (!habitat_block_content || !animal_block_content) return;
 
-  visit_btn.style.display = "block";
+  habitat_block_content.style.width = "100%";
+  animal_block_content.style.width = "0%";
+
+  animal_block_content.style.visibility = "hidden";
+  habitat_block_content.style.visibility = "visible";
+
+  habitat_block_content.style.opacity = "1";
+  animal_block_content.style.opacity = "0";
+
+  if (habitat_text === "air") {
+    air_habitat_content.style.width = "0%";
+    air_habitat_content.style.visibility = "hidden";
+    air_habitat_content.style.opacity = "0";
+    habitat_text = null;
+  } else if (habitat_text === "forest") {
+    forest_habitat_content.style.width = "0%";
+    forest_habitat_content.style.visibility = "hidden";
+    forest_habitat_content.style.opacity = "0";
+  } else if (habitat_text === "jungle") {
+    jungle_habitat_content.style.width = "0%";
+    jungle_habitat_content.style.visibility = "hidden";
+    jungle_habitat_content.style.opacity = "0";
+  } else if (habitat_text === "desert") {
+    desert_habitat_content.style.width = "0%";
+    desert_habitat_content.style.visibility = "hidden";
+    desert_habitat_content.style.opacity = "0";
+  } else if (habitat_text === "sea") {
+    sea_habitat_content.style.width = "0%";
+    sea_habitat_content.style.visibility = "hidden";
+    sea_habitat_content.style.opacity = "0";
+  }
 }

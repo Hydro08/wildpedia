@@ -1,0 +1,521 @@
+{
+  "air": [
+    {
+      "name": "Colugo",
+      "image": "assets/images/air/colugo.webp",
+      "video": "https://www.youtube.com/embed/MYvWxCBWmDc",
+      "credits": "Bizarre Beasts",
+      "location": "...",
+      "description": "...",
+      "trivia": "...",
+      "fun_fact": "..."
+    },
+    {
+      "name": "Flying Squirrel",
+      "image": "assets/images/air/flying-squirrel.webp",
+      "video": "https://www.youtube.com/embed/ZiPoqQn63L0",
+      "credits": "BBC Earth",
+      "location": "...",
+      "description": "...",
+      "trivia": "...",
+      "fun_fact": "..."
+    },
+    {
+      "name": "Greater Lophorina",
+      "image": "assets/images/air/greater-lophorina.webp",
+      "video": "https://www.youtube.com/embed/nPhVOZiPokA",
+      "credits": "Nat Geo Animals",
+      "location": "...",
+      "description": "...",
+      "trivia": "...",
+      "fun_fact": "..."
+    },
+    {
+      "name": "Imperial Amazon",
+      "image": "assets/images/air/imperial-amazon.webp",
+      "video": "https://www.youtube.com/embed/8nOQdZXnrco",
+      "credits": "Feathers Of The Rare",
+      "location": "...",
+      "description": "...",
+      "trivia": "...",
+      "fun_fact": "..."
+    },
+    {
+      "name": "Javan Hawk Eagle",
+      "image": "assets/images/air/javan-hawk-eagle.webp",
+      "video": "https://www.youtube.com/embed/WaMv-xyc_Go",
+      "credits": "Fauna Facts",
+      "location": "...",
+      "description": "...",
+      "trivia": "...",
+      "fun_fact": "..."
+    },
+    {
+      "name": "Magnificent Frigatebird",
+      "image": "assets/images/air/magnificent-frigatebird.webp",
+      "video": "https://www.youtube.com/embed/dhX8TI1bcy4",
+      "credits": "BBC Earth",
+      "location": "...",
+      "description": "...",
+      "trivia": "...",
+      "fun_fact": "..."
+    },
+    {
+      "name": "Mariana Fruit Dove",
+      "image": "assets/images/air/mariana-fruit-dove.webp",
+      "video": "https://www.youtube.com/embed/kMWP7ZUYGkA",
+      "credits": "Ecology of Bird Loss Project",
+      "location": "...",
+      "description": "...",
+      "trivia": "...",
+      "fun_fact": "..."
+    },
+    {
+      "name": "Spix Macaw",
+      "image": "assets/images/air/spix-macaw.webp",
+      "video": "https://www.youtube.com/embed/sZbaf9N_bmE",
+      "credits": "euronews",
+      "location": "...",
+      "description": "...",
+      "trivia": "...",
+      "fun_fact": "..."
+    },
+    {
+      "name": "Shoebill Stork",
+      "image": "assets/images/air/shoebill-stork.webp",
+      "video": "https://www.youtube.com/embed/4ArjlPAU_X4",
+      "credits": "BBC Earth",
+      "location": "...",
+      "description": "...",
+      "trivia": "...",
+      "fun_fact": "..."
+    },
+    {
+      "name": "White Hawk",
+      "image": "assets/images/air/white-hawk.webp",
+      "video": "https://www.youtube.com/embed/oPTjh8gV6lA",
+      "credits": "Jaguar Bird",
+      "location": "Central and South America",
+      "description": [
+        "The White Hawk (Pseudastur albicollis) is a stunning medium-sized raptor known for its pure white feathers that glisten under the sunlight. Its striking appearance, with black-tipped wings and a dark tail band, makes it one of the most recognizable birds in the tropical forests of the Americas. This hawk spends much of its time perched silently on tall trees, scanning the ground for movement. When it spots potential prey usually small mammals, lizards, snakes, or large insects it dives swiftly with incredible precision.",
+        "Despite its predatory nature, the White Hawk moves gracefully through the forest canopy, often gliding smoothly in the warm air currents. It is a solitary bird but may sometimes be seen soaring in pairs, especially during the breeding season. The species prefers quiet, humid areas where it can hunt effectively while staying hidden among the leaves. Its calm and observant nature, combined with its snow-white plumage, gives it an almost angelic presence in the wild."
+      ],
+      "trivia": [
+        "Unlike many other hawks that chase prey in open skies, the White Hawk is a master of stealth. It relies on patience rather than speed perching motionless for long periods before launching a quick, decisive strike. The White Hawk also has several subspecies that vary slightly in appearance depending on their region. For example, individuals in the Amazon tend to have darker underparts, while those from Central America appear almost completely white.",
+        "Local legends among indigenous groups often portray 'the White Hawk as a messenger of light', believed to guide spirits safely through the forest after death. Because of its calm flight and gleaming feathers, some even call it 'The Spirit Bird' or 'The Guardian of the Sky'."
+      ],
+      "fun_fact": [
+        "The White Hawk sometimes uses an unusual hunting trick it follows troops of monkeys or coatis moving through the forest. When these animals disturb insects or small reptiles on the ground, the hawk swoops in to capture the fleeing prey. This cooperative feeding behavior shows the White Hawk’s intelligence and adaptability.",
+        "Its brilliant white feathers are not just for show they help reflect sunlight, keeping the bird cool while soaring in hot, humid air. In flight, its glowing form is so bright that it seems to shimmer, making it one of the most breathtaking sights in the rainforest skies."
+      ]
+    }
+  ],
+  "forest": [
+    {
+      "name": "Borneo Orangutan",
+      "image": "assets/images/forest/borneo-orangutan.webp",
+      "video": "https://www.youtube.com/embed/GYZc2iLjOQg",
+      "credits": "Wendy Erb, Ph.D.",
+      "location": "...",
+      "description": "...",
+      "trivia": "...",
+      "fun_fact": "..."
+    },
+    {
+      "name": "Clouded Loepard",
+      "image": "assets/images/forest/clouded-leopard.webp",
+      "video": "https://www.youtube.com/embed/LmeFu8HMjDQ",
+      "credits": "Animalogic",
+      "location": "...",
+      "description": "...",
+      "trivia": "...",
+      "fun_fact": "..."
+    },
+    {
+      "name": "Cross River Gorilla",
+      "image": "assets/images/forest/cross-river-gorilla.webp",
+      "video": "https://www.youtube.com/embed/lYy2sGM-UVc",
+      "credits": "1 Minute Animals",
+      "location": "...",
+      "description": "...",
+      "trivia": "...",
+      "fun_fact": "..."
+    },
+    {
+      "name": "Golden Lion Tamarin",
+      "image": "assets/images/forest/golden-lion-tamarin.webp",
+      "video": "https://www.youtube.com/embed/bqPGxCAhIug",
+      "credits": "Animal Domain",
+      "location": "...",
+      "description": "...",
+      "trivia": "...",
+      "fun_fact": "..."
+    },
+    {
+      "name": "Javan Rhinoceros",
+      "image": "assets/images/forest/javan-rhinoceros.webp",
+      "video": "https://www.youtube.com/embed/vRmoz0pG7Hg",
+      "credits": "Wildlife Habitat",
+      "location": "...",
+      "description": "...",
+      "trivia": "...",
+      "fun_fact": "..."
+    },
+    {
+      "name": "Kakapo",
+      "image": "assets/images/forest/kakapo.webp",
+      "video": "https://www.youtube.com/embed/E3a88_SjJR0",
+      "credits": "BBC Earth",
+      "location": "...",
+      "description": "...",
+      "trivia": "...",
+      "fun_fact": "..."
+    },
+    {
+      "name": "Philippines Eagle",
+      "image": "assets/images/forest/philippines-eagle.webp",
+      "video": "https://www.youtube.com/embed/-JP-zoBLyWE",
+      "credits": "Nat Geo Animals",
+      "location": "...",
+      "description": "...",
+      "trivia": "...",
+      "fun_fact": "..."
+    },
+    {
+      "name": "Saola",
+      "image": "assets/images/forest/saola.webp",
+      "video": "https://www.youtube.com/embed/KnLntvQbf_Y",
+      "credits": "List of Animals",
+      "location": "...",
+      "description": "...",
+      "trivia": "...",
+      "fun_fact": "..."
+    },
+    {
+      "name": "Sumatran Tiger",
+      "image": "assets/images/forest/sumatran-tiger.webp",
+      "video": "https://www.youtube.com/embed/0_7dTrhBXfs",
+      "credits": "Nat Geo Animals",
+      "location": "...",
+      "description": "...",
+      "trivia": "...",
+      "fun_fact": "..."
+    },
+    {
+      "name": "Sunda Pangolin",
+      "image": "assets/images/forest/sunda-pangolin.webp",
+      "video": "https://www.youtube.com/embed/DqC3ieJJlFM&t=21s",
+      "credits": "National Geographic",
+      "location": "...",
+      "description": "...",
+      "trivia": "...",
+      "fun_fact": "..."
+    }
+  ],
+  "jungle": [
+    {
+      "name": "Binturong",
+      "image": "assets/images/jungle/binturong.webp",
+      "video": "https://www.youtube.com/embed/8Tniytx0ow0",
+      "credits": "Animalogic",
+      "location": "...",
+      "description": "...",
+      "trivia": "...",
+      "fun_fact": "..."
+    },
+    {
+      "name": "Dhole",
+      "image": "assets/images/jungle/dhole.webp",
+      "video": "https://www.youtube.com/embed/dPL2JrnJOlA",
+      "credits": "Animalogic",
+      "location": "...",
+      "description": "...",
+      "trivia": "...",
+      "fun_fact": "..."
+    },
+    {
+      "name": "Gibbon",
+      "image": "assets/images/jungle/gibbon.webp",
+      "video": "https://www.youtube.com/embed/C6HucIWKsVc",
+      "credits": "BBC Earth",
+      "location": "...",
+      "description": "...",
+      "trivia": "...",
+      "fun_fact": "..."
+    },
+    {
+      "name": "Glass Frog",
+      "image": "assets/images/jungle/glass-frog.webp",
+      "video": "https://www.youtube.com/embed/U7zARByAu1c",
+      "credits": "National Geographic",
+      "location": "...",
+      "description": "...",
+      "trivia": "...",
+      "fun_fact": "..."
+    },
+    {
+      "name": "Hornbill",
+      "image": "assets/images/jungle/hornbill.webp",
+      "video": "https://www.youtube.com/embed/GAe_04vmNRQ",
+      "credits": "BBC Earth",
+      "location": "...",
+      "description": "...",
+      "trivia": "...",
+      "fun_fact": "..."
+    },
+    {
+      "name": "Mandrill",
+      "image": "assets/images/jungle/mandrill.webp",
+      "video": "https://www.youtube.com/embed/Z_gsuUZggWQ",
+      "credits": "naturelenses",
+      "location": "...",
+      "description": "...",
+      "trivia": "...",
+      "fun_fact": "..."
+    },
+    {
+      "name": "Okapi",
+      "image": "assets/images/jungle/okapi.webp",
+      "video": "https://www.youtube.com/embed/2G8XsyNSIjo",
+      "credits": "Brookfield Zoo Chicago",
+      "location": "...",
+      "description": "...",
+      "trivia": "...",
+      "fun_fact": "..."
+    },
+    {
+      "name": "Satanic Leaf Tailed Gecko",
+      "image": "assets/images/jungle/satanic-leaf-tailed-gecko.webp",
+      "video": "https://www.youtube.com/embed/99xVDl4Pw1Q",
+      "credits": "Familiarity With Animals (FWA)",
+      "location": "...",
+      "description": "...",
+      "trivia": "...",
+      "fun_fact": "..."
+    },
+    {
+      "name": "Sloth",
+      "image": "assets/images/jungle/sloth.webp",
+      "video": "https://www.youtube.com/embed/DpV4k3Edr-I",
+      "credits": "Insider Science",
+      "location": "...",
+      "description": "...",
+      "trivia": "...",
+      "fun_fact": "..."
+    },
+    {
+      "name": "Tapir",
+      "image": "assets/images/jungle/tapir.webp",
+      "video": "https://www.youtube.com/embed/jp6hDaClMv0",
+      "credits": "1 Minute Animals",
+      "location": "...",
+      "description": "...",
+      "trivia": "...",
+      "fun_fact": "..."
+    }
+  ],
+  "desert": [
+    {
+      "name": "Arabian Sand Boa",
+      "image": "assets/images/Desert/arabian-sand-boa.webp",
+      "video": "https://www.youtube.com/embed/ICzb-ibu-Vo",
+      "credits": "Ben G Thomas",
+      "location": "...",
+      "description": "...",
+      "trivia": "...",
+      "fun_fact": "..."
+    },
+    {
+      "name": "Death Stalker",
+      "image": "assets/images/Desert/death-stalker.webp",
+      "video": "https://www.youtube.com/embed/F-F_WOn_8xg",
+      "credits": "Animal Snapz",
+      "location": "...",
+      "description": "...",
+      "trivia": "...",
+      "fun_fact": "..."
+    },
+    {
+      "name": "Egyptian Vulture",
+      "image": "assets/images/Desert/egyptian-vulture.webp",
+      "video": "https://www.youtube.com/embed/lwEhutnjzeU",
+      "credits": "San Diego Zoo",
+      "location": "...",
+      "description": "...",
+      "trivia": "...",
+      "fun_fact": "..."
+    },
+    {
+      "name": "Fennex Fox",
+      "image": "assets/images/Desert/fennex-fox.webp",
+      "video": "https://www.youtube.com/embed/1IGw4UZcFkM",
+      "credits": "WILDOPEDIA",
+      "location": "North Africa",
+      "description": "The smallest fox species in the world, the Fennec Fox lives in the Sahara Desert. It has large ears (up to 15 cm long) that help dissipate heat and detect prey underground. Its cream-colored fur reflects sunlight and provides camouflage in the sand",
+      "trivia": "Their ears not only cool them down but also help them hear insects and rodents moving underground. They can go for long periods without water, obtaining moisture from food.",
+      "fun_fact": "It Has Extra Fur on Its Feet (It has extra-furry feet to protect its paw pads from the hot sand. It's a Skilled Communicator (Both young and adult fennec foxes use an array of vocalizations including barks, chatters, growls, brief and repeated howls, shrieks, squeaks, and whimpers)"
+    },
+    {
+      "name": "Gila Monster",
+      "image": "assets/images/Desert/gila-monster.webp",
+      "video": "https://www.youtube.com/embed/yj1lBcQmQNE",
+      "credits": "Fatherspeedy IAM",
+      "location": "Southwestern United States and northern Mexico",
+      "description": "A large, slow-moving venomous lizard found in the deserts of the southwestern U.S. and northern Mexico. It has bead-like scales and bright orange and black markings",
+      "trivia": "One of the few venomous lizards in the world. It spends up to 95% of its life underground, emerging mainly to feed in spring.",
+      "fun_fact": "Its venom inspired a diabetes medication (Exenatide). Its orange and black skin pattern warns predators that it's venomous a natural 'Do Not Touch' sign."
+    },
+    {
+      "name": "Greater Road Runner",
+      "image": "assets/images/Desert/greater-road-runner.webp",
+      "video": "https://www.youtube.com/embed/RFUtQbEYHJQ",
+      "credits": "BBC Earth",
+      "location": "...",
+      "description": "...",
+      "trivia": "...",
+      "fun_fact": "..."
+    },
+    {
+      "name": "Horned Viper",
+      "image": "assets/images/Desert/horned-viper.webp",
+      "video": "https://www.youtube.com/embed/qyDcuTjiQ7U",
+      "credits": "Animal Fact Files",
+      "location": "...",
+      "description": "...",
+      "trivia": "...",
+      "fun_fact": "..."
+    },
+    {
+      "name": "Jerboa",
+      "image": "assets/images/Desert/jerboa.webp",
+      "video": "https://www.youtube.com/embed/bvoFTZ1Luro",
+      "credits": "Wonder World",
+      "location": "...",
+      "description": "...",
+      "trivia": "...",
+      "fun_fact": "..."
+    },
+    {
+      "name": "Secretary Bird",
+      "image": "assets/images/Desert/secretary-bird.webp",
+      "video": "https://www.youtube.com/embed/JX2J4oeoiUU",
+      "credits": "Wildacious",
+      "location": "...",
+      "description": "...",
+      "trivia": "...",
+      "fun_fact": "..."
+    },
+    {
+      "name": "Wild Bactrian Camel",
+      "image": "assets/images/Desert/wild-bactrian-camel.webp",
+      "video": "https://www.youtube.com/embed/yTCicX7nljg",
+      "credits": "Mammalwatching",
+      "location": "...",
+      "description": "...",
+      "trivia": "...",
+      "fun_fact": "..."
+    }
+  ],
+  "sea": [
+    {
+      "name": "Blob Fish",
+      "image": "assets/images/Sea/blobfish.webp",
+      "video": "https://www.youtube.com/embed/58Cw4a7WxDo",
+      "credits": "1 Minute Animals",
+      "location": "...",
+      "description": "...",
+      "trivia": "...",
+      "fun_fact": "..."
+    },
+    {
+      "name": "Bobbit Worm",
+      "image": "assets/images/Sea/bobbit-worm.webp",
+      "video": "https://www.youtube.com/embed/P3kLeRSiCjM",
+      "credits": "naturelenses",
+      "location": "...",
+      "description": "...",
+      "trivia": "...",
+      "fun_fact": "..."
+    },
+    {
+      "name": "Dumbo Octopus",
+      "image": "assets/images/Sea/dumbo-octopus.webp",
+      "video": "https://www.youtube.com/embed/YcoMEaBjJLk",
+      "credits": "The Dodo",
+      "location": "...",
+      "description": "...",
+      "trivia": "...",
+      "fun_fact": "..."
+    },
+    {
+      "name": "Frilled Shark",
+      "image": "assets/images/Sea/frilled-shark.webp",
+      "video": "https://www.youtube.com/embed/qYH32gKMHuc",
+      "credits": "Discovery",
+      "location": "...",
+      "description": "...",
+      "trivia": "...",
+      "fun_fact": "..."
+    },
+    {
+      "name": "Frogfish",
+      "image": "assets/images/Sea/frogfish.webp",
+      "video": "https://www.youtube.com/embed/uRP4nAGMYCY",
+      "credits": "Ze Frank",
+      "location": "...",
+      "description": "...",
+      "trivia": "...",
+      "fun_fact": "..."
+    },
+    {
+      "name": "Goblin Shark",
+      "image": "assets/images/Sea/goblin-shark.webp",
+      "video": "http://youtube.com/embed/P8TT90LWYaw",
+      "credits": "National Geographic",
+      "location": "...",
+      "description": "...",
+      "trivia": "...",
+      "fun_fact": "..."
+    },
+    {
+      "name": "Leafy Seadragon",
+      "image": "assets/images/Sea/leafy-seadragon.webp",
+      "video": "https://www.youtube.com/embed/NsGK7cUdelM",
+      "credits": "Deep Marine Scenes",
+      "location": "...",
+      "description": "...",
+      "trivia": "...",
+      "fun_fact": "..."
+    },
+    {
+      "name": "Peacock Mantis Shrimp",
+      "image": "assets/images/Sea/peacock-mantis-shrimp.webp",
+      "video": "https://www.youtube.com/embed/E0Li1k5hGBE",
+      "credits": "Nat Geo Animals",
+      "location": "...",
+      "description": "...",
+      "trivia": "...",
+      "fun_fact": "..."
+    },
+    {
+      "name": "Ribbon Eel",
+      "image": "assets/images/Sea/ribbon-eel.webp",
+      "video": "https://www.youtube.com/embed/5kqA5WIJl_g",
+      "credits": "Ben G Thomas",
+      "location": "...",
+      "description": "...",
+      "trivia": "...",
+      "fun_fact": "..."
+    },
+    {
+      "name": "Sunfish",
+      "image": "assets/images/Sea/sunfish.webp",
+      "video": "https://www.youtube.com/embed/lEj8bnx0TB0",
+      "credits": "Real Science",
+      "location": "...",
+      "description": "...",
+      "trivia": "...",
+      "fun_fact": "..."
+    }
+  ]
+}
