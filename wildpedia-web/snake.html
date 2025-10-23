@@ -5,11 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Snake Game</title>
     <link rel="stylesheet" href="assets/css/snake.css" />
+    <link rel="stylesheet" href="assets/css/hover.css" />
   </head>
   <body>
     <div class="container">
       <header class="container-header">
-        <h1 id="container-title">Snake Game</h1>
+        <div class="content">
+          <button onclick="history.back()">Website</button>
+        </div>
+        <div class="content">
+          <h1 id="container-title">Snake Game</h1>
+        </div>
       </header>
 
       <div class="container-wrapper">
@@ -18,32 +24,23 @@
             <h1>Select Difficulties</h1>
           </header>
           <div class="difficulties-wrapper" id="difficulties-wrapper">
-            <div class="difficulties-content" onclick="start_easy()">
+            <div class="difficulties-content" onclick="setMode('EASY')">
               <h1>EASY</h1>
             </div>
-            <div class="difficulties-content">
+            <div class="difficulties-content" onclick="setMode('MEDIUM')">
               <h1>MEDIUM</h1>
             </div>
-            <div class="difficulties-content">
+            <div class="difficulties-content" onclick="setMode('HARD')">
               <h1>HARD</h1>
             </div>
           </div>
         </div>
-        <div class="easy-difficulty" id="easy-difficulty">
-          <div class="settings-mode" id="settings-mode">
+        <div class="difficulty-screen" id="difficulty-screen">
+          <div class="guide-mode" id="guide-mode">
             <button id="back-btn" onclick="back_page()">Back</button>
-            <button id="settings-btn" onclick="settings_content()">
-              Settings
-            </button>
+            <button id="guide-btn" onclick="guide_content()">Guide</button>
             <button id="start-btn" onclick="start_game()">Start</button>
-            <button
-              class="restart-btn"
-              id="restart-btn"
-              onclick="restart_game()"
-            >
-              Restart
-            </button>
-            <label for="food">Food</label>
+            <span for="food">Food: </sp>
             <input
               id="food-count"
               type="text"
@@ -53,8 +50,8 @@
               oninput="this.value = this.value.replace(/[^1-5]/g, '')"
             />
           </div>
-          <div class="settings-main" id="settings-main">
-            <div class="settings-content">
+          <div class="guide-main" id="guide-main">
+            <div class="guide-content">
               <button onclick="back_settings_mode()">Back</button>
               <h2>Legend</h2>
               <ul>
@@ -63,16 +60,32 @@
                   Food (+1 Segment)
                 </li>
                 <li>
-                  <span class="legend-box" style="background: blue"></span>
-                  Speed Potion (Speed for 10s)
+                  <span class="legend-box" style="background: #555"></span>
+                  Obstacles (Dangerous)
                 </li>
                 <li>
-                  <span class="legend-box" style="background: red"></span> Bonus
-                  Food (+2 Score)
+                  <span
+                    class="legend-box"
+                    style="background: blue; border-radius: 50%"
+                  ></span>
+                  Speed Potion (faster movement for 10s)
+                </li>
+                <li>
+                  <span
+                    class="legend-box"
+                    style="background: red; border-radius: 50%"
+                  ></span>
+                  Double Points (2x score per food for 10s)
+                </li>
+                <li>
+                  <span
+                    class="legend-box"
+                    style="background: orange; border-radius: 50%"
+                  ></span>
+                  Growth Potion (+2 size per food eaten 10s)
                 </li>
               </ul>
             </div>
-            <h2>Legend</h2>
 
             <button onclick="toggle_settings()">Close</button>
           </div>
@@ -89,6 +102,7 @@
               width="800"
               height="550"
             ></canvas>
+            <div class="potion-cd" id="potion-cd"></div>
           </div>
         </div>
       </div>
