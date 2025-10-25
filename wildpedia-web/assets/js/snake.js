@@ -1,5 +1,6 @@
 // ----------------------
 // REFACTORED SNAKE GAME (All features: food, obstacles, potions)
+// - HARD mode: full obstacle refresh every 10-15s
 // ----------------------
 
 // --------- Canvas & Context ----------
@@ -11,7 +12,7 @@ let box = 10;
 let snake = [];
 let direction = "RIGHT";
 let canChangeDirection = true;
-let food = null; // either object or array
+let food = []; // either object or array
 let obstacles = [];
 let score = 0;
 let highscore = parseInt(localStorage.getItem("highscore")) || 0;
@@ -23,6 +24,10 @@ let gameOver = false;
 let last_spawn_score = 0;
 let currentMode = "EASY";
 let foodValue = 1;
+let foodRespawnInterval = null;
+
+// obstacle refresh timer for HARD mode
+let obstacleRefreshTimer = null;
 
 // --------- Potions state & timers (centralized) ----------
 const potions = {
@@ -55,8 +60,6 @@ const guide_mode = document.getElementById("guide-mode");
 const guide_main = document.getElementById("guide-main");
 const food_count = document.getElementById("food-count");
 const score_value = document.getElementById("score-value");
-
-// Potion countdown container
 const potionCD = document.getElementById("potion-cd");
 
 // --------- Utilities ----------
@@ -91,11 +94,16 @@ function isPositionTaken(x, y) {
   return false;
 }
 
+// Slightly different name for occupancy check using a position object
+function isOccupied(pos) {
+  return isPositionTaken(pos.x, pos.y);
+}
+
 // --------- Score ----------
 function update_score(points = 1) {
   if (double_points_active) points *= 2;
   score += points;
-  score_value.innerText = score;
+  if (score_value) score_value.innerText = score;
 
   if (score > highscore) {
     highscore = score;
@@ -104,12 +112,16 @@ function update_score(points = 1) {
   const hsEl = document.getElementById("highscore-value");
   if (hsEl) hsEl.innerText = highscore;
 
-  // spawn obstacles logic
+  // spawn obstacles logic (legacy behavior kept)
   if (score >= 20 && obstacles.length === 0) spawn_obstacles(10);
 
   if (score % 10 === 0 && score >= 30 && score !== last_spawn_score) {
     spawn_obstacles(3);
     last_spawn_score = score;
+  }
+
+  if (score > 0 && score % 15 === 0) {
+    spawnExtraFood();
   }
 }
 
@@ -120,6 +132,8 @@ function clearAllPotionTimers() {
     clearTimeout(potionTimers[key].remove);
     potionTimers[key].spawn = potionTimers[key].remove = null;
   }
+  // clear potion UI
+  if (potionCD) potionCD.innerHTML = "";
 }
 
 function resetEffectsAndPotions() {
@@ -129,171 +143,77 @@ function resetEffectsAndPotions() {
   for (const k of Object.keys(potions))
     potions[k] = { x: 0, y: 0, active: false };
   clearAllPotionTimers();
-  // clear potion UI
-  if (potionCD) potionCD.innerHTML = "";
 }
 
-// --------- Mode & Setup ----------
-function setMode(mode) {
-  currentMode = mode;
-  container_title.innerText =
-    mode.charAt(0) + mode.slice(1).toLowerCase() + " Mode";
-  difficulties_container.style.width = "0%";
-  difficulties_container.style.opacity = "0";
-  difficulties_container.style.visibility = "hidden";
-  difficulty_screen.style.visibility = "visible";
-  difficulty_screen.style.width = "100%";
-  difficulty_screen.style.opacity = "1";
-  canvas_area.style.opacity = "1";
-
-  const fv = parseInt(food_count.value) || 1;
-  setup_mode(mode, fv);
+// Stop obstacle refresh (used on end/back)
+function stopObstacleRefresh() {
+  if (obstacleRefreshTimer) {
+    clearTimeout(obstacleRefreshTimer);
+    obstacleRefreshTimer = null;
+  }
 }
 
-function setup_mode(mode, fv = 1) {
-  // initialize snake near center
+// Start the HARD-mode full obstacle refresh cycle
+function startObstacleRefreshCycle() {
+  stopObstacleRefresh();
+  const randomDelay = Math.floor(Math.random() * 5000) + 10000; // 10-15s
+  obstacleRefreshTimer = setTimeout(() => {
+    refreshObstacles(); // wipe and regenerate
+    startObstacleRefreshCycle(); // schedule next
+  }, randomDelay);
+}
+
+// Generate a fresh set using the configured count (or fallback)
+function refreshObstacles() {
+  // keep previous count if any, else default to 6 for HARD
+  const count = obstacles.length > 0 ? obstacles.length : 6;
+  obstacles = generateObstacles(count);
+  draw_game(); // immediate visual update
+}
+
+// Create initial obstacles for MEDIUM/HARD
+function generateInitialObstacles(count = 6) {
+  obstacles = generateObstacles(count);
+}
+
+// Generic single random obstacle spawn (kept if needed elsewhere)
+function spawnRandomObstacle() {
   const { cols, rows } = colsRows();
-  snake = [{ x: Math.floor(cols / 2) * box, y: Math.floor(rows / 2) * box }];
-  obstacles = [];
-  resetEffectsAndPotions();
-  foodValue = fv;
-
-  switch (mode) {
-    case "EASY":
-      speed = originalSpeed = 150;
-      break;
-    case "MEDIUM":
-      speed = originalSpeed = 100;
-      break;
-    case "HARD":
-      speed = originalSpeed = 70;
-      break;
-    default:
-      speed = originalSpeed = 150;
-  }
-}
-
-// --------- Start / Back ----------
-function back_page() {
-  container_title.innerText = "Snake Game";
-  difficulties_container.style.width = "100%";
-  difficulty_screen.style.visibility = "hidden";
-  difficulty_screen.style.width = "0%";
-  difficulty_screen.style.opacity = "0";
-  difficulties_container.style.opacity = "1";
-  difficulties_container.style.visibility = "visible";
-  canvas_area.style.opacity = "0";
-
-  score = 0;
-  score_value.innerText = score;
-  food_count.value = "";
-  clearInterval(game_interval);
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  resetEffectsAndPotions();
-}
-
-function start_game() {
-  const fv = parseInt(food_count.value);
-  if (isNaN(fv) || fv < 1 || fv > 5) {
-    alert("Please enter amount of food [1 - 5]");
-    return;
-  }
-  foodValue = fv;
-
-  clearInterval(game_interval);
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  resetEffectsAndPotions();
-
-  // Reset snake & direction
-  snake = [{ x: 40 * box, y: 25 * box }];
-  direction = "RIGHT";
-  canChangeDirection = true;
-
-  // Reset score
-  score = 0;
-  score_value.innerText = score;
-
-  // Generate food
-  food_init(foodValue);
-
-  // Speed per mode
-  switch (currentMode) {
-    case "EASY":
-      originalSpeed = speed = 150;
-      break;
-    case "MEDIUM":
-      originalSpeed = speed = 100;
-      break;
-    case "HARD":
-      originalSpeed = speed = 70;
-      break;
-    default:
-      originalSpeed = speed = 150;
-  }
-  speedMultiplier = 1;
-
-  // Spawn initial potions immediately
-  spawnPotion("growth_potion", true);
-  spawnPotion("speed_potion", true);
-  spawnPotion("double_points_potion", true);
-
-  // Obstacles according to mode
-  if (currentMode === "MEDIUM") obstacles = generateObstacles(5);
-  else if (currentMode === "HARD") obstacles = generateObstacles(10);
-  else obstacles = [];
-
-  updateGameInterval();
-  disable_buttons(true);
-}
-
-// --------- Disable UI buttons while running ----------
-function disable_buttons(state) {
-  if (back_btn) back_btn.disabled = state;
-  if (guide_btn) guide_btn.disabled = state;
-  if (start_btn) start_btn.disabled = state;
-}
-
-// --------- Food ----------
-function food_init(fv = 1) {
-  const { cols, rows } = colsRows();
-  if (fv === 1) {
-    let candidate;
-    do {
-      candidate = randCell(cols, rows, 2);
-    } while (isPositionTaken(candidate.x, candidate.y));
-    food = candidate;
-  } else {
-    const arr = [];
-    while (arr.length < fv) {
-      const candidate = randCell(cols, rows, 2);
-      if (
-        !arr.some((a) => a.x === candidate.x && a.y === candidate.y) &&
-        !isPositionTaken(candidate.x, candidate.y)
-      )
-        arr.push(candidate);
+  let tries = 0;
+  while (tries < 500) {
+    const c = randCell(cols, rows, 1);
+    if (!isPositionTaken(c.x, c.y)) {
+      obstacles.push(c);
+      draw_game();
+      return;
     }
-    food = arr;
+    tries++;
   }
+  // fallback: do nothing if no space found after many tries
 }
 
-// --------- Obstacles ----------
+// Spawn multiple obstacles at once
+function spawn_obstacles(count = 10) {
+  const newObs = generateObstacles(count);
+  obstacles.push(...newObs);
+}
+
+// Generate obstacles helper (no duplicates, avoids occupied cells)
 function generateObstacles(count) {
   const obs = [];
   const { cols, rows } = colsRows();
-  while (obs.length < count) {
+  let safety = 0;
+  while (obs.length < count && safety < count * 500) {
     const c = randCell(cols, rows, 1);
     if (
       !isPositionTaken(c.x, c.y) &&
       !obs.some((o) => o.x === c.x && o.y === c.y)
-    )
+    ) {
       obs.push(c);
+    }
+    safety++;
   }
   return obs;
-}
-
-function spawn_obstacles(count = 10) {
-  const newObs = generateObstacles(count);
-  obstacles.push(...newObs);
 }
 
 // --------- Potions: durations per mode ----------
@@ -331,14 +251,11 @@ function spawnPotion(potionKey, immediate = false) {
     } while (isPositionTaken(candidate.x, candidate.y));
 
     potions[potionKey] = { x: candidate.x, y: candidate.y, active: true };
-    console.log(`${potionKey} spawned at`, candidate);
 
     // schedule auto-remove after duration (then respawn after respawn delay)
     potionTimers[potionKey].remove = setTimeout(() => {
       if (potions[potionKey].active) {
         potions[potionKey].active = false;
-        console.log(`${potionKey} auto-removed`);
-        // respawn after randomized delay + respawn base time
         const nextSpawnDelay =
           respawn + Math.floor(Math.random() * 5000) + 5000;
         potionTimers[potionKey].spawn = setTimeout(
@@ -351,7 +268,6 @@ function spawnPotion(potionKey, immediate = false) {
     draw_game(); // redraw immediately
   }
 
-  // Apply delay logic
   if (immediate) {
     // delayed spawn even on immediate = true (for realism)
     setTimeout(createPotionNow, randomDelay);
@@ -365,12 +281,10 @@ function drawPotions() {
   for (const key of Object.keys(potions)) {
     const p = potions[key];
     if (!p || !p.active) continue;
-    // color mapping
     let color = "orange";
     if (key === "speed_potion") color = "blue";
     if (key === "double_points_potion") color = "red";
 
-    // draw circle so it's visible
     ctx.fillStyle = color;
     ctx.beginPath();
     ctx.arc(p.x + box / 2, p.y + box / 2, box * 0.75, 0, Math.PI * 2);
@@ -405,7 +319,6 @@ function drawSnake() {
 }
 
 function draw_game() {
-  // clear background
   ctx.fillStyle = "#222";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -415,7 +328,6 @@ function draw_game() {
   drawPotions();
   drawSnake();
 
-  // border
   ctx.strokeStyle = "white";
   ctx.strokeRect(0, 0, canvas.width, canvas.height);
 }
@@ -465,11 +377,6 @@ function moveSnake() {
 
 function updateGameInterval() {
   clearInterval(game_interval);
-  console.log(
-    "[updateGameInterval] Applying interval with multiplier:",
-    speedMultiplier
-  );
-
   game_interval = setInterval(() => {
     moveSnake();
     draw_game();
@@ -481,22 +388,37 @@ function eatFood(head) {
   let growthWanted = 0;
 
   // === FOOD EATING ===
-  const foodArray = Array.isArray(food) ? [...food] : [food];
-  for (let i = 0; i < foodArray.length; i++) {
-    if (head.x === foodArray[i].x && head.y === foodArray[i].y) {
+  if (Array.isArray(food)) {
+    for (let i = 0; i < food.length; i++) {
+      const f = food[i];
+      if (!f) continue;
+      if (head.x === f.x && head.y === f.y) {
+        growthWanted = growth_active ? 2 : 1;
+        update_score(1);
+
+        // Remove eaten food from actual array
+        food.splice(i, 1);
+
+        // Always spawn a replacement food
+        spawnExtraFood();
+
+        break;
+      }
+    }
+  } else {
+    if (head.x === food.x && head.y === food.y) {
       growthWanted = growth_active ? 2 : 1;
       update_score(1);
-      // reposition that food piece
+
+      // Reposition single food
       const { cols, rows } = colsRows();
       let candidate;
       do {
         candidate = randCell(cols, rows, 2);
       } while (isPositionTaken(candidate.x, candidate.y));
-      foodArray[i] = candidate;
-      break;
+      food = candidate;
     }
   }
-  food = Array.isArray(food) ? foodArray : foodArray[0];
 
   // === POTIONS PICKUP ===
   // Growth potion
@@ -526,22 +448,17 @@ function eatFood(head) {
     head.y === potions.speed_potion.y
   ) {
     potions.speed_potion.active = false;
-
-    // smoother, controlled speed boost
-    console.log("[Potion] Speed potion eaten! Multiplier:", 2);
     speedMultiplier = 2;
-    updateGameInterval(); // apply immediately
-
+    updateGameInterval();
     showPotionCountdown(
       "speed",
       "blue",
       Math.floor(getPotionDurations(currentMode).duration / 1000)
     );
-
     clearTimeout(potionTimers.speed_potion.remove);
     potionTimers.speed_potion.remove = setTimeout(() => {
       speedMultiplier = 1;
-      updateGameInterval(); // revert smoothly
+      updateGameInterval();
       spawnPotion("speed_potion", true);
     }, getPotionDurations(currentMode).duration);
   }
@@ -566,9 +483,46 @@ function eatFood(head) {
     }, getPotionDurations(currentMode).duration);
   }
 
-  // After any effect change, update interval so speed changes take effect
   updateGameInterval();
   return growthWanted;
+}
+
+function respawnAllFood() {
+  if (!Array.isArray(food)) return;
+
+  const { cols, rows } = colsRows();
+  const newFood = [];
+
+  for (let i = 0; i < food.length; i++) {
+    let candidate;
+    do {
+      candidate = randCell(cols, rows, 2);
+    } while (
+      isPositionTaken(candidate.x, candidate.y) ||
+      newFood.some((f) => f.x === candidate.x && f.y === candidate.y)
+    );
+    newFood.push(candidate);
+  }
+
+  food = newFood;
+}
+
+function startFoodRespawnLoop() {
+  if (foodRespawnInterval) clearInterval(foodRespawnInterval);
+
+  foodRespawnInterval = setInterval(() => {
+    const t = Math.random() * 5000 + 10000; // 10-15s
+    setTimeout(respawnAllFood, t);
+  }, 15000);
+}
+
+function spawnExtraFood() {
+  const { cols, rows } = colsRows();
+  const c = randCell(cols, rows, 1);
+
+  if (!isPositionTaken(c.x, c.y)) {
+    food.push(c);
+  }
 }
 
 // --------- Collisions & game end ----------
@@ -588,52 +542,47 @@ function checkCollisions() {
 
   // obstacle
   if (checkObstacleCollision(head)) {
+    alert("Game Over! You hit the obstacle.");
     endGame();
     return;
   }
 
   // self
   if (collision(head, snake.slice(1))) {
+    alert("Game Over! You hit yourself.");
     endGame();
     return;
   }
 }
 
 function checkObstacleCollision(head) {
-  const hit = obstacles.some((b) => b.x === head.x && b.y === head.y);
-  if (hit) alert("Game Over! You hit the obstacles.");
-  return hit;
+  return obstacles.some((b) => b.x === head.x && b.y === head.y);
 }
 
 function collision(head, array) {
-  const hit = array.some((seg) => seg.x === head.x && seg.y === head.y);
-  if (hit) alert("Game Over! You hit yourself.");
-  return hit;
+  return array.some((seg) => seg.x === head.x && seg.y === head.y);
 }
 
 function endGame() {
   gameOver = true;
   clearInterval(game_interval);
+  clearInterval(foodRespawnInterval);
+  stopObstacleRefresh();
   disable_buttons(false);
   resetEffectsAndPotions();
 
-  // Restore speed from mode title (fallback)
-  speed =
-    container_title.innerText === "Easy Mode"
-      ? 150
-      : container_title.innerText === "Medium Mode"
-      ? 100
-      : 70;
+  // Restore speed fallback based on currentMode
+  if (currentMode === "EASY") speed = 150;
+  else if (currentMode === "MEDIUM") speed = 100;
+  else speed = 70;
   originalSpeed = speed;
 
-  // clear potion UI
   if (potionCD) potionCD.innerHTML = "";
 }
 
 // --------- Potion countdown UI ----------
 function showPotionCountdown(type, color, durationSeconds) {
   if (!potionCD) return;
-  // create UI element
   const boxEl = document.createElement("div");
   const hoverSpan = document.createElement("span");
   boxEl.classList.add("potion-box");
@@ -659,6 +608,174 @@ function showPotionCountdown(type, color, durationSeconds) {
       boxEl.remove();
     }
   }, 1000);
+}
+
+// --------- Mode & Setup ----------
+function setMode(mode) {
+  currentMode = mode;
+  container_title.innerText =
+    mode.charAt(0) + mode.slice(1).toLowerCase() + " Mode";
+  difficulties_container.style.width = "0%";
+  difficulties_container.style.opacity = "0";
+  difficulties_container.style.visibility = "hidden";
+  difficulty_screen.style.visibility = "visible";
+  difficulty_screen.style.width = "100%";
+  difficulty_screen.style.opacity = "1";
+  canvas_area.style.opacity = "1";
+
+  const fv = parseInt(food_count.value) || 1;
+  setup_mode(mode, fv);
+}
+
+function setup_mode(mode, fv = 1) {
+  const { cols, rows } = colsRows();
+  snake = [{ x: Math.floor(cols / 2) * box, y: Math.floor(rows / 2) * box }];
+  obstacles = [];
+  resetEffectsAndPotions();
+  foodValue = fv;
+
+  switch (mode) {
+    case "EASY":
+      speed = originalSpeed = 150;
+      break;
+    case "MEDIUM":
+      speed = originalSpeed = 100;
+      break;
+    case "HARD":
+      speed = originalSpeed = 70;
+      break;
+    default:
+      speed = originalSpeed = 150;
+  }
+  speedMultiplier = 1;
+}
+
+// --------- Start / Back ----------
+function back_page() {
+  container_title.innerText = "Snake Game";
+  difficulties_container.style.width = "100%";
+  difficulty_screen.style.visibility = "hidden";
+  difficulty_screen.style.width = "0%";
+  difficulty_screen.style.opacity = "0";
+  difficulties_container.style.opacity = "1";
+  difficulties_container.style.visibility = "visible";
+  canvas_area.style.opacity = "0";
+
+  score = 0;
+  if (score_value) score_value.innerText = score;
+  food_count.value = "";
+  clearInterval(game_interval);
+  stopObstacleRefresh();
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  resetEffectsAndPotions();
+}
+
+function start_game() {
+  const fv = parseInt(food_count.value);
+  if (isNaN(fv) || fv < 1 || fv > 5) {
+    alert("Please enter amount of food [1 - 5]");
+    return;
+  }
+  foodValue = fv;
+
+  clearInterval(game_interval);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  resetEffectsAndPotions();
+  stopObstacleRefresh();
+
+  // Reset snake & direction
+  snake = [{ x: 40 * box, y: 25 * box }];
+  direction = "RIGHT";
+  canChangeDirection = true;
+
+  // Reset score
+  score = 0;
+  if (score_value) score_value.innerText = score;
+
+  // Generate food
+  food_init(foodValue);
+
+  // Speed per mode and obstacle init for MEDIUM/HARD
+  switch (currentMode) {
+    case "EASY":
+      originalSpeed = speed = 150;
+      obstacles = [];
+      break;
+    case "MEDIUM":
+      originalSpeed = speed = 100;
+      generateInitialObstacles(5);
+      break;
+    case "HARD":
+      originalSpeed = speed = 70;
+      generateInitialObstacles(10); // initial set
+      startObstacleRefreshCycle(); // begin full refresh every 10-15s
+      break;
+    default:
+      originalSpeed = speed = 150;
+      obstacles = [];
+  }
+  speedMultiplier = 1;
+
+  // Spawn initial potions immediately
+  spawnPotion("growth_potion", true);
+  spawnPotion("speed_potion", true);
+  spawnPotion("double_points_potion", true);
+
+  startFoodRespawnLoop();
+  updateGameInterval();
+  disable_buttons(true);
+}
+
+function back_settings_mode() {
+  guide_main.style.width = "0%";
+  guide_mode.style.width = "40%";
+
+  guide_main.style.opacity = "0";
+  guide_mode.style.opacity = "1";
+
+  guide_main.style.visibility = "hidden";
+  guide_mode.visibility = "visible";
+}
+
+function guide_content() {
+  guide_main.style.opacity = "1";
+  guide_mode.style.width = "0";
+
+  guide_main.style.width = "40%";
+  guide_mode.style.opacity = "0";
+
+  guide_main.style.visibility = "visible";
+  guide_mode.visibility = "hidden";
+}
+
+// --------- Disable UI buttons while running ----------
+function disable_buttons(state) {
+  if (back_btn) back_btn.disabled = state;
+  if (guide_btn) guide_btn.disabled = state;
+  if (start_btn) start_btn.disabled = state;
+}
+
+// --------- Food ----------
+function food_init(fv = 1) {
+  const { cols, rows } = colsRows();
+  if (fv === 1) {
+    let candidate;
+    do {
+      candidate = randCell(cols, rows, 2);
+    } while (isPositionTaken(candidate.x, candidate.y));
+    food = candidate;
+  } else {
+    const arr = [];
+    while (arr.length < fv) {
+      const candidate = randCell(cols, rows, 2);
+      if (
+        !arr.some((a) => a.x === candidate.x && a.y === candidate.y) &&
+        !isPositionTaken(candidate.x, candidate.y)
+      )
+        arr.push(candidate);
+    }
+    food = arr;
+  }
 }
 
 // --------- Initial draw to make sure canvas not blank ----------
@@ -687,4 +804,7 @@ window.DEBUG = {
   setup_mode,
   setMode,
   spawn_obstacles,
+  spawnRandomObstacle,
+  refreshObstacles,
+  stopObstacleRefresh,
 };

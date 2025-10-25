@@ -209,7 +209,9 @@ span {
   position: absolute;
   top: 0;
   left: 0;
-  background: #222;
+  background: rgb(0, 163, 0);
+  box-shadow: 0 0 10px;
+  border-radius: 10px;
   transition: all 0.5s ease;
   z-index: -1;
 }
@@ -271,6 +273,12 @@ span {
 }
 
 .game-canvas {
+  background: #222;
+  border: 2px solid #0f0;
+  transition: all 0.5s ease;
+}
+
+.display-canvas {
   background: #222;
   border: 2px solid #0f0;
   transition: all 0.5s ease;
