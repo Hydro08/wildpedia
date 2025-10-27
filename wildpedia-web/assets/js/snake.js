@@ -1,8 +1,3 @@
-// ----------------------
-// REFACTORED SNAKE GAME (All features: food, obstacles, potions)
-// - HARD mode: full obstacle refresh every 10-15s
-// ----------------------
-
 // --------- Canvas & Context ----------
 const canvas = document.getElementById("game-canvas");
 const ctx = canvas.getContext("2d");
@@ -22,14 +17,17 @@ let originalSpeed = 150;
 let speedMultiplier = 1; // used during speed potion
 let gameOver = false;
 let last_spawn_score = 0;
+let lastExtraSpawnScore = 0;
 let currentMode = "EASY";
 let foodValue = 1;
 let foodRespawnInterval = null;
+let maxDelay, minDelay;
+let foodRespawnTimeout = null;
 
 // obstacle refresh timer for HARD mode
 let obstacleRefreshTimer = null;
 
-// --------- Potions state & timers (centralized) ----------
+// Potions state & timers (centralized)
 const potions = {
   growth_potion: { x: 0, y: 0, active: false },
   speed_potion: { x: 0, y: 0, active: false },
@@ -46,7 +44,7 @@ const potionTimers = {
 let growth_active = false; // normal food growth = 2 when true
 let double_points_active = false;
 
-// --------- UI Elements (assumes these exist) ----------
+// UI Elements
 const container_title = document.getElementById("container-title");
 const back_btn = document.getElementById("back-btn");
 const guide_btn = document.getElementById("guide-btn");
@@ -62,7 +60,7 @@ const food_count = document.getElementById("food-count");
 const score_value = document.getElementById("score-value");
 const potionCD = document.getElementById("potion-cd");
 
-// --------- Utilities ----------
+// Utilities
 function randCell(cols, rows, margin = 1) {
   return {
     x: Math.floor(Math.random() * (cols - 2 * margin) + margin) * box,
@@ -99,7 +97,7 @@ function isOccupied(pos) {
   return isPositionTaken(pos.x, pos.y);
 }
 
-// --------- Score ----------
+// Score
 function update_score(points = 1) {
   if (double_points_active) points *= 2;
   score += points;
@@ -112,20 +110,25 @@ function update_score(points = 1) {
   const hsEl = document.getElementById("highscore-value");
   if (hsEl) hsEl.innerText = highscore;
 
-  // spawn obstacles logic (legacy behavior kept)
-  if (score >= 20 && obstacles.length === 0) spawn_obstacles(10);
+  if (currentMode === "EASY" && score >= 20 && !obstacleRefreshTimer) {
+    startObstacleRefreshCycle(45000, 50000);
+  }
+  if (score >= 20 && obstacles.length === 0)
+    // spawn obstacles logic (legacy behavior kept)
+    spawn_obstacles(10);
 
   if (score % 10 === 0 && score >= 30 && score !== last_spawn_score) {
     spawn_obstacles(3);
     last_spawn_score = score;
   }
 
-  if (score > 0 && score % 15 === 0) {
+  if (score - lastExtraSpawnScore >= 15) {
     spawnExtraFood();
+    lastExtraSpawnScore = score;
   }
 }
 
-// --------- Game control helpers ----------
+// Game control helpers
 function clearAllPotionTimers() {
   for (const key of Object.keys(potionTimers)) {
     clearTimeout(potionTimers[key].spawn);
@@ -154,25 +157,32 @@ function stopObstacleRefresh() {
 }
 
 // Start the HARD-mode full obstacle refresh cycle
-function startObstacleRefreshCycle() {
+function startObstacleRefreshCycle(minDelay = 10000, maxDelay = 15000) {
   stopObstacleRefresh();
-  const randomDelay = Math.floor(Math.random() * 5000) + 10000; // 10-15s
+  const randomDelay =
+    Math.floor(Math.random() * (maxDelay - minDelay)) + minDelay; // 10-15s
   obstacleRefreshTimer = setTimeout(() => {
     refreshObstacles(); // wipe and regenerate
-    startObstacleRefreshCycle(); // schedule next
+    startObstacleRefreshCycle(maxDelay, minDelay); // schedule next
   }, randomDelay);
 }
 
-// Generate a fresh set using the configured count (or fallback)
 function refreshObstacles() {
-  // keep previous count if any, else default to 6 for HARD
-  const count = obstacles.length > 0 ? obstacles.length : 6;
+  let count = obstacles.length;
+
+  // Only HARD mode or if obstacles already exist
+  if (currentMode === "HARD") {
+    if (count === 0) count = 6; // default for HARD
+  } else {
+    if (count === 0) return; // Easy/Medium: do nothing if no obstacles yet
+  }
+
   obstacles = generateObstacles(count);
-  draw_game(); // immediate visual update
+  draw_game();
 }
 
 // Create initial obstacles for MEDIUM/HARD
-function generateInitialObstacles(count = 6) {
+function generateInitialObstacles(count = 1) {
   obstacles = generateObstacles(count);
 }
 
@@ -216,7 +226,7 @@ function generateObstacles(count) {
   return obs;
 }
 
-// --------- Potions: durations per mode ----------
+// Potions: durations per mode
 function getPotionDurations(mode) {
   switch (mode) {
     case "EASY":
@@ -276,7 +286,7 @@ function spawnPotion(potionKey, immediate = false) {
   }
 }
 
-// --------- Drawing ----------
+// Drawing
 function drawPotions() {
   for (const key of Object.keys(potions)) {
     const p = potions[key];
@@ -383,7 +393,7 @@ function updateGameInterval() {
   }, speed / speedMultiplier);
 }
 
-// --------- Eat food & potions handling ----------
+// Eat food & potions handling
 function eatFood(head) {
   let growthWanted = 0;
 
@@ -509,23 +519,32 @@ function respawnAllFood() {
 
 function startFoodRespawnLoop() {
   if (foodRespawnInterval) clearInterval(foodRespawnInterval);
+  if (foodRespawnTimeout) clearTimeout(foodRespawnTimeout);
 
-  foodRespawnInterval = setInterval(() => {
-    const t = Math.random() * 5000 + 10000; // 10-15s
-    setTimeout(respawnAllFood, t);
-  }, 15000);
+  const t = Math.random() * 5000 + 10000;
+  foodRespawnTimeout = setTimeout(() => {
+    respawnAllFood(); // first respawn
+    foodRespawnInterval = setInterval(respawnAllFood, 15000);
+  }, t);
 }
 
 function spawnExtraFood() {
-  const { cols, rows } = colsRows();
-  const c = randCell(cols, rows, 1);
+  const maxFood = 12;
+  if (Array.isArray(food) && food.length >= maxFood) return; // stop kung puno na
 
-  if (!isPositionTaken(c.x, c.y)) {
-    food.push(c);
+  const { cols, rows } = colsRows();
+  let tries = 0;
+  while (tries < 500) {
+    const c = randCell(cols, rows, 1);
+    if (!isPositionTaken(c.x, c.y)) {
+      food.push(c);
+      break; // matagumpay, exit loop
+    }
+    tries++;
   }
 }
 
-// --------- Collisions & game end ----------
+// Collisions & game end
 function checkCollisions() {
   const head = snake[0];
   // wall
@@ -566,21 +585,29 @@ function collision(head, array) {
 function endGame() {
   gameOver = true;
   clearInterval(game_interval);
-  clearInterval(foodRespawnInterval);
+
   stopObstacleRefresh();
   disable_buttons(false);
   resetEffectsAndPotions();
 
-  // Restore speed fallback based on currentMode
+  lastExtraSpawnScore = 0;
+
+  // Restore speed fallback
   if (currentMode === "EASY") speed = 150;
   else if (currentMode === "MEDIUM") speed = 100;
   else speed = 70;
   originalSpeed = speed;
 
   if (potionCD) potionCD.innerHTML = "";
+
+  // Clear food respawn timers
+  if (foodRespawnInterval) clearInterval(foodRespawnInterval);
+  foodRespawnInterval = null;
+  if (foodRespawnTimeout) clearTimeout(foodRespawnTimeout);
+  foodRespawnTimeout = null;
 }
 
-// --------- Potion countdown UI ----------
+// Potion countdown UI
 function showPotionCountdown(type, color, durationSeconds) {
   if (!potionCD) return;
   const boxEl = document.createElement("div");
@@ -610,7 +637,7 @@ function showPotionCountdown(type, color, durationSeconds) {
   }, 1000);
 }
 
-// --------- Mode & Setup ----------
+// Mode & Setup
 function setMode(mode) {
   currentMode = mode;
   container_title.innerText =
@@ -637,12 +664,17 @@ function setup_mode(mode, fv = 1) {
   switch (mode) {
     case "EASY":
       speed = originalSpeed = 150;
+      obstacles = [];
       break;
     case "MEDIUM":
       speed = originalSpeed = 100;
+      generateInitialObstacles(5);
+      startObstacleRefreshCycle(25000, 30000);
       break;
     case "HARD":
       speed = originalSpeed = 70;
+      generateInitialObstacles(10);
+      startObstacleRefreshCycle(10000, 15000);
       break;
     default:
       speed = originalSpeed = 150;
@@ -650,7 +682,7 @@ function setup_mode(mode, fv = 1) {
   speedMultiplier = 1;
 }
 
-// --------- Start / Back ----------
+// Start / Back
 function back_page() {
   container_title.innerText = "Snake Game";
   difficulties_container.style.width = "100%";
@@ -671,6 +703,7 @@ function back_page() {
 }
 
 function start_game() {
+  // --- Food value check ---
   const fv = parseInt(food_count.value);
   if (isNaN(fv) || fv < 1 || fv > 5) {
     alert("Please enter amount of food [1 - 5]");
@@ -678,45 +711,47 @@ function start_game() {
   }
   foodValue = fv;
 
+  // --- Clear previous intervals/timers ---
   clearInterval(game_interval);
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  resetEffectsAndPotions();
+  clearInterval(foodRespawnInterval);
   stopObstacleRefresh();
+  resetEffectsAndPotions(); // also clears potion timers
 
-  // Reset snake & direction
+  // --- Reset snake & direction ---
   snake = [{ x: 40 * box, y: 25 * box }];
   direction = "RIGHT";
   canChangeDirection = true;
 
-  // Reset score
+  // --- Reset score ---
   score = 0;
+  lastExtraSpawnScore = 0; // safe for extra food
   if (score_value) score_value.innerText = score;
 
-  // Generate food
+  // --- Generate initial food ---
   food_init(foodValue);
 
-  // Speed per mode and obstacle init for MEDIUM/HARD
+  // --- Speed & obstacles per mode ---
+  obstacles = [];
   switch (currentMode) {
     case "EASY":
-      originalSpeed = speed = 150;
-      obstacles = [];
+      speed = originalSpeed = 150;
       break;
     case "MEDIUM":
-      originalSpeed = speed = 100;
+      speed = originalSpeed = 100;
       generateInitialObstacles(5);
+      startObstacleRefreshCycle(25000, 30000);
       break;
     case "HARD":
-      originalSpeed = speed = 70;
-      generateInitialObstacles(10); // initial set
-      startObstacleRefreshCycle(); // begin full refresh every 10-15s
+      speed = originalSpeed = 70;
+      generateInitialObstacles(10);
+      startObstacleRefreshCycle(10000, 15000);
       break;
     default:
-      originalSpeed = speed = 150;
-      obstacles = [];
+      speed = originalSpeed = 150;
   }
   speedMultiplier = 1;
 
-  // Spawn initial potions immediately
+  // --- Spawn potions safely ---
   spawnPotion("growth_potion", true);
   spawnPotion("speed_potion", true);
   spawnPotion("double_points_potion", true);
@@ -748,14 +783,14 @@ function guide_content() {
   guide_mode.visibility = "hidden";
 }
 
-// --------- Disable UI buttons while running ----------
+// Disable UI buttons while running
 function disable_buttons(state) {
   if (back_btn) back_btn.disabled = state;
   if (guide_btn) guide_btn.disabled = state;
   if (start_btn) start_btn.disabled = state;
 }
 
-// --------- Food ----------
+// Food
 function food_init(fv = 1) {
   const { cols, rows } = colsRows();
   if (fv === 1) {
@@ -778,10 +813,10 @@ function food_init(fv = 1) {
   }
 }
 
-// --------- Initial draw to make sure canvas not blank ----------
+// Initial draw to make sure canvas not blank
 draw_game();
 
-// --------- Debug helper (optional) ----------
+// Debug helper
 function debugState() {
   console.log({
     snakeLen: snake.length,

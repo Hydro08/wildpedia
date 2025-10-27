@@ -93,3 +93,8 @@ footer .image-container .image-content img:hover {
   opacity: 1;
   transform: translateY(-10px);
 }
+
+.profile-pic:hover img {
+  transform: scale(0.9);
+  filter: brightness(1.1) contrast(1.2) saturate(1.1);
+}

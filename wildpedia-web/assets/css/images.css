@@ -204,7 +204,7 @@
   .animals-container
   .air-content
   .cards:nth-child(4) {
-  background: url(../images/air/magnificent-frigatebird.webp);
+  background: url(../images/air/greater-lophorina.webp);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -226,7 +226,7 @@
   .animals-container
   .air-content
   .cards:nth-child(6) {
-  background: url(../images/air/greater-lophorina.webp);
+  background: url(../images/air/javan-hawk-eagle.webp);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -237,7 +237,7 @@
   .animals-container
   .air-content
   .cards:nth-child(7) {
-  background: url(../images/air/javan-hawk-eagle.webp);
+  background: url(../images/air/magnificent-frigatebird.webp);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
