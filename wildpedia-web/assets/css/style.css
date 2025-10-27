@@ -695,7 +695,7 @@ body {
 
 .profile-info h2 {
   color: #fff;
-  text-shadow: 0 0 18px lime;
+  text-shadow: 0 0 18px #fff;
   font-family: "Courier New", Courier, monospace;
   text-align: center;
   margin: 15px;
