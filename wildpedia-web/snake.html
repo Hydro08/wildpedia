@@ -6,6 +6,18 @@
     <title>Snake Game</title>
     <link rel="stylesheet" href="assets/css/snake.css" />
     <link rel="stylesheet" href="assets/css/hover.css" />
+    <link
+      rel="icon"
+      href="assets/icons/light-snake.png"
+      type="image/png"
+      media="(prefers-color-scheme: light)"
+    />
+    <link
+      rel="icon"
+      href="assets/icons/dark-snake.png"
+      type="image/png"
+      media="(prefers-color-scheme: dark)"
+    />
   </head>
   <body>
     <div class="container">
@@ -40,7 +52,7 @@
             <button id="back-btn" onclick="back_page()">Back</button>
             <button id="guide-btn" onclick="guide_content()">Guide</button>
             <button id="start-btn" onclick="start_game()">Start</button>
-            <span for="food">Food: </sp>
+            <span for="food">Food: </span>
             <input
               id="food-count"
               type="text"
@@ -85,16 +97,7 @@
                   Growth Potion (+2 size per food eaten 10s)
                 </li>
               </ul>
-                <h2>Difficulties</h2>
-                <ul>
-                  <h4>Easy</h4>
-                  <li>Every potion has 20 seconds duration</li>
-                  <li>if score reach 30 random obstacle will spawn</li>
-                  <li>Every 15 score it will add new food</li>
-                </ul>
             </div>
-
-            <button onclick="toggle_settings()">Close</button>
           </div>
           <div class="canvas-area" id="canvas-area">
             <div class="score-area">
